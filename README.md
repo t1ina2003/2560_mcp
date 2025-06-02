@@ -2,21 +2,33 @@
 
 ## 如何在 VS Code 啟用 GitHub MCP Server
 
-1. 安裝 VS Code 擴充套件：
-   - 前往 Extensions 市集，搜尋並安裝 `GitHub Copilot` 及 `Model Context Protocol (MCP)` 相關擴充。
+1. 在 VS Code 的 `settings.json` 新增以下設定：
 
-2. 開啟 MCP Server：
-   - 在 VS Code 命令面板（Ctrl+Shift+P）輸入 `MCP: Start Server` 並執行。
-   - 若無此指令，請確認 MCP 擴充已正確安裝。
+```json
+"github": {
+  "command": "docker",
+  "args": [
+    "run",
+    "-i",
+    "--rm",
+    "-e",
+    "GITHUB_PERSONAL_ACCESS_TOKEN",
+    "ghcr.io/github/github-mcp-server"
+  ],
+  "env": {
+    "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_token}"
+  }
+}
+```
 
-3. 連接 GitHub：
-   - 根據提示登入 GitHub 帳號，授權 VS Code 存取權限。
+2. 這段設定參考自 [github-mcp-server 官方說明](https://github.com/github/github-mcp-server)。
 
-4. 測試 MCP Server：
-   - 在命令面板輸入 `MCP: Status` 檢查伺服器狀態。
+3. 設定說明：
+   - 這會讓 VS Code 透過 Docker 啟動 GitHub MCP Server。
+   - 你需要有 Docker 環境，並準備好 GitHub Personal Access Token。
+   - `${input:github_token}` 可在 VS Code 的 `settings.json` 內以 `inputs` 機制設定。
 
-5. 進階設定：
-   - 可於 VS Code 設定中搜尋 `MCP` 進行進一步自訂。
+4. 進階設定與疑難排解，請參考官方文件。
 
 ---
 
